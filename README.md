@@ -3,10 +3,9 @@ Adding CSS @import to theme development
 
 This guide will allow you to define your own folder structure for your stylesheets while building Shopify themes.
 
-All styles will be created and maintained in a working directory from your theme's root folder. By using `@import` the files will be compiled to a master `theme.scss.liquid` file in your `/assets` directory.
+Stylesheets can be created and maintained in `css/` from your theme's root folder.
 
-Follow this guide to use the CSS @import function during your Shopify theme development.
-
+In the example `css/` folder there is a single `theme.scss.liquid` file that imports other stylesheets into it. Files starting with an underscore are not added to your `assets/` folder.
 
 You can use Grunt or Gulp to achieve the same effect.
 
@@ -15,9 +14,8 @@ You can use Grunt or Gulp to achieve the same effect.
 - Node.js 0.10.22+ ([check and upgrade Node.js here](http://stackoverflow.com/questions/20887400/gruntjs-bus-error-grunt-watch))
 - [Shopify Theme Gem](https://github.com/Shopify/shopify_theme)
 
-### Basic structure
+### Basic theme structure
 ```
-├── // Theme folder
 ├── assets/
 ├── layout/
 ├── snippets/
@@ -25,6 +23,7 @@ You can use Grunt or Gulp to achieve the same effect.
 │
 ├── // Non-theme files/folders (Theme Gem, Grunt, Gulp, etc.)
 ├── config.yml
+├── css/
 ├── Gemfile
 ├── Gruntfile.js
 ├── package.json
