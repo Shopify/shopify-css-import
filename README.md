@@ -1,4 +1,4 @@
-Adding CSS @import to Shopify theme development
+Adding CSS @import to theme development
 =====================
 
 This guide will allow you to define your own folder structure for your stylesheets while building Shopify themes.
