@@ -39,10 +39,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks ('grunt-exec');
-  grunt.loadNpmTasks ('grunt-concurrent');
-  grunt.loadNpmTasks ('grunt-contrib-watch');
-  grunt.loadNpmTasks ('grunt-gulp');
+  require('load-grunt-tasks')(grunt);
 
   grunt.registerTask ('default', ['concurrent:watch']);
 
