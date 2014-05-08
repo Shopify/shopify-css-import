@@ -1,0 +1,32 @@
+GIT
+  remote: git@github.com:Shopify/shopify_theme.git
+  revision: ca8bca3b91a269fa6053c972b8ee08abf8950f4d
+  specs:
+    shopify_theme (0.0.17)
+      filewatcher
+      httparty (~> 0.13.0)
+      json (~> 1.8.0)
+      launchy
+      thor (>= 0.14.4)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.3.6)
+    filewatcher (0.3.4)
+      trollop (~> 2.0)
+    httparty (0.13.1)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.1)
+    launchy (2.4.2)
+      addressable (~> 2.3)
+    multi_xml (0.5.5)
+    thor (0.19.1)
+    trollop (2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  shopify_theme!
