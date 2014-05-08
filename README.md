@@ -90,7 +90,7 @@ Navigate to your theme root in Terminal.
 ##### 1. Install gulp globally
 
 ```
-npm install - gulp
+npm install -g gulp
 ```
 You may have to use `sudo` for this.
 
