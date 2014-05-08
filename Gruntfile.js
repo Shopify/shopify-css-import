@@ -1,5 +1,9 @@
 module.exports = function(grunt) {
 
+  var globalConfig = {
+    src: 'css' // your dev stylesheet directory. No trailing slash
+  };
+
   var gulp = require('gulp');
   var cssimport = require("gulp-cssimport");
 
@@ -12,7 +16,7 @@ module.exports = function(grunt) {
 
     gulp: {
       concat: function() {
-        return gulp.src('css/**/*.*')
+        return gulp.src(globalConfig.src + '/**/*.*')
           .pipe(cssimport())
           .pipe(gulp.dest('assets/'));
       }
@@ -20,7 +24,7 @@ module.exports = function(grunt) {
 
     watch: {
       gulp: {
-        files: 'css/**/*.*',
+        files: globalConfig.src + '/**/*.*',
         tasks: ['gulp']
       }
     },
