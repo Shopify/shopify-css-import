@@ -46,13 +46,14 @@ You may have to use `sudo` for this.
 ##### 2. Create this package.json file in your theme's root
 ```
 {
-  "name": "shopify-sass-imports",
+  "name": "shopify-css-import",
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-concurrent": "~0.5.0",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-exec": "~0.4.5",
-    "grunt-gulp": "^0.1.0"
+    "grunt-gulp": "^0.1.0",
+    "load-grunt-tasks": "^0.4.0"
   }
 }
 ```
