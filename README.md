@@ -97,7 +97,7 @@ You may have to use `sudo` for this.
 ##### 2. Install gulp-cssimports
 
 ```
-npm install gulp-cssimports
+npm install gulp-cssimport
 ```
 
 ##### 3. Create this gulpfile.js file in your theme's root
