@@ -25,21 +25,11 @@
           <h2 class="hero-text">{{ site.github.project_tagline }}</h2>
           <div class="cta-buttons">
             <a href="{{ site.github.zip_url }}" class="float">Download ZIP</a>
-
-            <!--
-              Get current repo stats from public_repositories meta data.
-              Note: this causes a lot of whitespace
-            -->
-            {% for repo in site.github.public_repositories %}
-              {% if repo.name == site.github.project_title %}
-                <a href="{{ site.github.repository_url }}" class="float github">
-                  Github Repo
-                  <i class="icon-star" title="Stars"></i> {{ repo.stargazers_count }}
-                  <i class="icon-forks" title="Forks"></i> {{ repo.forks_count }}
-                </a>
-              {% endif %}
-            {% endfor %}
-
+            <a href="{{ site.github.repository_url }}" class="float github">
+              Github Repo
+              <i class="icon-star" title="Stars"></i> <span id="starCount"></span>
+              <i class="icon-forks" title="Forks"></i> <span id="forkCount"></span>
+            </a>
           </div>
         </div>
       </div>
@@ -55,6 +45,13 @@
     {% include footer.html %}
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-
+    <script src="//shopify.github.io/javascripts/sub.js"></script>
+    <script>
+    jQuery(function($) {
+      shopifyOpenSource.init({
+        repo_name: '{{ site.github.repository_nwo }}'
+      });
+    });
+    </script>
     </body>
 </html>
