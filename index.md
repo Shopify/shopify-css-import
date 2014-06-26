@@ -121,7 +121,6 @@ In a separate them Terminal window that is still in your theme's root, run:
 
 	theme watch
 
-
 ## License
 
 Copyright (c) 2014 Shopify. Released under the [MIT-LICENSE](http://opensource.org/licenses/MIT).
