@@ -43,36 +43,17 @@ npm install -g grunt-cli
 
 You may have to use `sudo` for this.
 
-##### 2. Move package.json file in your theme's root
-```
-{
-  "name": "shopify-css-import",
-  "devDependencies": {
-    "grunt": "~0.4.4",
-    "grunt-concurrent": "~0.5.0",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-exec": "~0.4.5",
-    "grunt-gulp": "^0.1.0",
-    "load-grunt-tasks": "^0.4.0"
-  }
-}
-```
+##### 2. Move package.json and Gemfile to your theme's root
 
 ##### 3. Install gulp (globally) and gulp-cssimports
 ```
+npm install - gulp
 npm install gulp-cssimports
-npm install
 ```
 
 ##### 4. Install required packages
 ```
-npm install - gulp
-```
-
-##### 5. Move Gemfile in your theme's root
-```
-source 'https://rubygems.org'
-gem 'shopify_theme', :git => 'git@github.com:Shopify/shopify_theme.git'
+npm install
 ```
 
 ##### 5. Run bundle install
@@ -100,13 +81,13 @@ npm install - gulp
 ```
 You may have to use `sudo` for this.
 
-##### 2. Install gulp-cssimports
+##### 2. Move gulpfile.js file in your theme's root
+
+##### 3. Install required packages
 
 ```
 npm install gulp-cssimports
 ```
-
-##### 3. Move gulpfile.js file in your theme's root
 
 ##### 4. Run gulp watch
 ```
@@ -114,8 +95,8 @@ gulp watch
 ```
 
 ##### 5. Run Shopify theme gem
-Make sure your config.yml file is setup properly. [Docs here](https://github.com/Shopify/shopify_theme).
-In a separate them Terminal window that is still in your theme's root, run:
+Make sure `config.yml` file is setup properly. [Docs here](https://github.com/Shopify/shopify_theme).
+In a separate Terminal window that is still in your theme's root, run:
 ```
 theme watch
 ```
