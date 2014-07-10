@@ -43,13 +43,14 @@ npm install -g grunt-cli
 
 You may have to use `sudo` for this.
 
-##### 2. Move package.json and Gemfile to your theme's root
+##### 2. Move Gemfile, Gruntfile.js and package.json to your theme's root
 
-##### 3. Install gulp (globally) and gulp-cssimports
+##### 3. Install gulp (globally) and gulp-cssimport
 ```
-npm install - gulp
-npm install gulp-cssimports
+npm install gulp
+npm install gulp-cssimport
 ```
+You may have to use `sudo` for this.
 
 ##### 4. Install required packages
 ```
@@ -77,7 +78,7 @@ Navigate to your theme root in Terminal.
 ##### 1. Install gulp globally
 
 ```
-npm install - gulp
+npm install gulp
 ```
 You may have to use `sudo` for this.
 
@@ -86,7 +87,7 @@ You may have to use `sudo` for this.
 ##### 3. Install required packages
 
 ```
-npm install gulp-cssimports
+npm install gulp-cssimport
 ```
 
 ##### 4. Run gulp watch
