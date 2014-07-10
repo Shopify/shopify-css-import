@@ -43,7 +43,7 @@ npm install -g grunt-cli
 
 You may have to use `sudo` for this.
 
-##### 2. Create this package.json file in your theme's root
+##### 2. Move package.json file in your theme's root
 ```
 {
   "name": "shopify-css-import",
@@ -58,12 +58,18 @@ You may have to use `sudo` for this.
 }
 ```
 
-##### 3. Install required packages
+##### 3. Install gulp (globally) and gulp-cssimports
 ```
+npm install gulp-cssimports
 npm install
 ```
 
-##### 4. Create this Gemfile in your theme's root
+##### 4. Install required packages
+```
+npm install - gulp
+```
+
+##### 5. Move Gemfile in your theme's root
 ```
 source 'https://rubygems.org'
 gem 'shopify_theme', :git => 'git@github.com:Shopify/shopify_theme.git'
@@ -100,28 +106,7 @@ You may have to use `sudo` for this.
 npm install gulp-cssimports
 ```
 
-##### 3. Create this gulpfile.js file in your theme's root
-
-```
-// https://github.com/unlight/gulp-cssimport
-var gulp = require('gulp');
-var cssimport = require("gulp-cssimport");
-
-// Process CSS
-gulp.task('styles', function(){
-  return gulp.src('css/**/*.*')
-    .pipe(cssimport())
-    .pipe(gulp.dest('assets/'));
-})
-
-// Watch files
-gulp.task('watch', function () {
-  gulp.watch('css/**/*.*', ['styles']);
-});
-
-// Default task
-gulp.task('default', ['watch']);
-```
+##### 3. Move gulpfile.js file in your theme's root
 
 ##### 4. Run gulp watch
 ```
