@@ -47,7 +47,7 @@ You may have to use `sudo` for this.
 
 ##### 3. Install gulp (globally) and gulp-cssimport
 ```
-npm install gulp
+npm install -g gulp
 npm install gulp-cssimport
 ```
 You may have to use `sudo` for this.
@@ -78,7 +78,7 @@ Navigate to your theme root in Terminal.
 ##### 1. Install gulp globally
 
 ```
-npm install gulp
+npm install -g gulp
 ```
 You may have to use `sudo` for this.
 
