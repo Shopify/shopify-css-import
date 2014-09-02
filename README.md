@@ -101,3 +101,7 @@ In a separate Terminal window that is still in your theme's root, run:
 ```
 theme watch
 ```
+
+Output
+=====================
+Once gulp or grunt runs it will create ```theme.scss.liquid``` inside your ```/assets/``` folder. To call this file you need to place ```{{ 'theme.scss.css' | asset_url | stylesheet_tag }}``` inside your ```theme.liquid``` file. Shopify automatically compiles everything on their servers. If for some reason it is not compiling it's probable because there is a random charset somewhere inside your stylesheet.
