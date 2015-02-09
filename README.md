@@ -46,6 +46,7 @@ You may have to use `sudo` for this.
 ##### 2. Move Gemfile, Gruntfile.js and package.json to your theme's root
 
 ##### 3. Install gulp (globally) and gulp-cssimport
+We specifically want the Gulp plugin so we have to install Gulp. Everything after this will be handled with Grunt.
 ```
 npm install -g gulp
 npm install gulp-cssimport
