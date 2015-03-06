@@ -1,12 +1,6 @@
-*, input, :before, :after {
-  -webkit-box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  box-sizing:border-box;
-}
-
-// ==============================================================================
-// #Breakpoint and Grid Variables
-// ==============================================================================
+/*============================================================================
+  #Breakpoint and Grid Variables
+==============================================================================*/
 $viewportIncrement: 1px;
 
 $small: 480px;
@@ -17,7 +11,7 @@ $postSmall: $small + $viewportIncrement;
 $preMedium: $medium - $viewportIncrement;
 $preLarge: $large - $viewportIncrement;
 
-/* The following are dependencies of csswizardry grid */
+/*================ The following are dependencies of csswizardry grid ================*/
 $breakpoints: (
   'small' '(max-width: #{$small})',
   'medium' '(min-width: #{$postSmall}) and (max-width: #{$medium})',
@@ -25,93 +19,158 @@ $breakpoints: (
   'large' '(min-width: #{$large})'
 );
 $breakpoint-has-widths: ('small', 'medium', 'medium-down', 'large');
-$breakpoint-has-push:  ('small', 'medium', 'medium-down', 'large');
-$breakpoint-has-pull:  ('small', 'medium', 'medium-down', 'large');
+$breakpoint-has-push:  ('medium', 'medium-down', 'large');
+$breakpoint-has-pull:  ('medium', 'medium-down', 'large');
 
-// ==============================================================================
-// #General Variables
-// ==============================================================================
+/*============================================================================
+  #General Variables
+==============================================================================*/
 
-/* Button colors */
-$colorBtnPrimary: #747474; // boring grey
+// Primary Colors
+$colorPrimary: {{ settings.color_primary }};
+$colorSecondary: {{ settings.color_secondary }};
+
+// Button colors
+$colorBtnPrimary: $colorPrimary;
 $colorBtnPrimaryHover: darken($colorBtnPrimary, 10%);
 $colorBtnPrimaryActive: darken($colorBtnPrimaryHover, 10%);
+$colorBtnPrimaryText: #fff;
 
-$colorBtnSecondary: #464646;
+$colorBtnSecondary: $colorSecondary;
 $colorBtnSecondaryHover: darken($colorBtnSecondary, 10%);
 $colorBtnSecondaryActive: darken($colorBtnSecondaryHover, 10%);
+$colorBtnSecondaryText: #fff;
 
-/* Text link colors */
-$colorLink: #515151;
-$colorLinkHover: #333;
+// Text link colors
+$colorLink: $colorPrimary;
+$colorLinkHover: lighten($colorPrimary, 15%);
 
-/* Text colors */
-$colorBody: #fff;
-$colorText: #333;
-$colorHeaders: #999;
-$colorTextGrey: #777;
+// Text colors
+$colorTextBody: {{ settings.color_body_text }};
 
-/* Border colors */
-$borderColor: #e5e5e5;
+// Backgrounds
+$colorBody: {{ settings.color_body_bg }};
 
-/* Nav and dropdown link background */
-$colorNav: #f6f6f6;
+// Border colors
+$colorBorder: {{ settings.color_borders }};
 
-/* Helper colors */
+// Nav and dropdown link background
+$colorNav: #f2f2f2;
+$colorNavText: #333;
+
+// Site Footer
+$colorFooterBg: {{ settings.color_footer_bg }};
+$colorFooterText: {{ settings.color_footer_text }};
+
+// Helper colors
 $disabledGrey: #f6f6f6;
 $disabledBorder: darken($disabledGrey, 25%);
-$errorRed: #dc0000;
-$errorRedBg: lighten($errorRed, 55%);
-$successGreen: #0a942a;
+$errorRed: #d02e2e;
+$errorRedBg: #fff6f6;
+$successGreen: #56ad6a;
+$successGreenBg: #ecfef0;
 
-/* Width variables */
+// Sizing variables
 $siteWidth: 1180px;
-$gutter: 24px;
-$gridGutter: 24px; // can be a %, but nested grids will have smaller margins because of it
-
-/* Radius */
+$gutter: 30px;
+$gridGutter: 30px; // can be a %, but nested grids will have smaller margins because of it
 $radius: 3px;
 
-/* Typography */
-$headerFontStack: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-$bodyFontStack: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+/*================ Typography ================*/
+
+$headerFontStack: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$headerFontWeight: 700;
+
+$bodyFontStack: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$baseFontSize: 14px; // Henseforth known as 1em
+
+@font-face {
+  font-family: 'icons';
+  src: url('{{ "icons.eot" | asset_url }}');
+  src: url('{{ "icons.eot" | asset_url }}#iefix') format("embedded-opentype"),
+       url('{{ "icons.woff" | asset_url }}') format("woff"),
+       url('{{ "icons.ttf" | asset_url }}') format("truetype"),
+       url('{{ "icons.svg" | asset_url }}#timber-icons') format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+$socialIconFontStack: 'icons';
 
 
-// ==============================================================================
-// #Sass Mixins
-// ==============================================================================
+/*============================================================================
+  #Sass Mixins
+==============================================================================*/
 .clearfix {
   &:after {
-    content: "";
+    content: '';
     display: table;
     clear: both; }
   *zoom: 1;
 }
+
 @mixin clearfix() {
-  @extend .clearfix;
+  &:after {
+    content: '';
+    display: table;
+    clear: both; }
+  *zoom: 1;
 }
 
-@mixin box-shadow($shadow) {
-  -webkit-box-shadow: #{$shadow};
-  -moz-box-shadow:    #{$shadow};
-  box-shadow:         #{$shadow};
+@mixin prefix($property, $value) {
+  -webkit-#{$property}: #{$value};
+  -moz-#{$property}: #{$value};
+  -ms-#{$property}: #{$value};
+  -o-#{$property}: #{$value};
+  #{$property}: #{$value};
 }
 
-@mixin transition($transition:0.1s all) {
-  -webkit-transition: #{$transition};
-  -moz-transition: #{$transition};
-  -o-transition: #{$transition};
-  transition: #{$transition};
+@mixin transition($transition: 0.1s all) {
+  @include prefix('transition', #{$transition});
 }
 
-/*
+@mixin gradient($from, $to, $fallback) {
+  background: $fallback;
+  background: -moz-linear-gradient(top, $from 0%, $to 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$from), color-stop(100%,$to));
+  background: -webkit-linear-gradient(top, $from 0%, $to 100%);
+  background: -o-linear-gradient(top, $from 0%, $to 100%);
+  background: -ms-linear-gradient(top, $from 0%, $to 100%);
+  background: linear-gradient(top bottom, $from 0%, $to 100%);
+}
+
+@mixin backface($visibility: hidden) {
+  @include prefix('backface-visibility', #{$visibility});
+}
+
+@mixin box-sizing($box-sizing: border-box) {
+  -webkit-box-sizing: #{$box-sizing};
+  -moz-box-sizing: #{$box-sizing};
+  box-sizing: #{$box-sizing};
+}
+
+@function em($target, $context: $baseFontSize) {
+  @if $target == 0 {
+    @return 0;
+  }
+  @return $target / $context + 0em;
+}
+
+@function color-control($color) {
+  @if (lightness( $color ) > 40) {
+    @return #000;
+  }
+  @else {
+    @return #fff;
+  }
+}
+
+/*============================================================================
   Dependency-free breakpoint mixin
-  http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
-*/
+    - http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
+==============================================================================*/
 $min: min-width;
 $max: max-width;
-@mixin at-query($constraint, $viewport1, $viewport2:null) {
-
+@mixin at-query ($constraint, $viewport1, $viewport2:null) {
   @if $constraint == $min {
     @media screen and ($min: $viewport1) {
       @content;
@@ -125,5 +184,4 @@ $max: max-width;
       @content;
     }
   }
-
 }
