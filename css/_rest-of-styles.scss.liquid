@@ -1,165 +1,351 @@
-// ==============================================================================
-// #Basic Styles
-// ==============================================================================
+/*============================================================================
+  #Basic Styles
+==============================================================================*/
 html {
-  background-color: #f6f6f6;
+  background-color: $colorFooterBg;
 }
 
 body {
-  background-color: #fff;
+  background-color: $colorBody;
+}
+
+[tabindex='-1']:focus {
+  outline: none;
 }
 
 .wrapper {
   @include clearfix();
   max-width: $siteWidth;
   margin: 0 auto;
-  padding: 0 $gutter;
+  padding: 0 ($gutter / 2);
+
+  @include at-query ($min, $small) {
+    padding: 0 $gutter;
+  }
 }
 
 .main-content {
   display: block;
-  padding-top: $gutter*2;
-  padding-bottom: $gutter*2;
+  margin-top: $gutter;
+  padding-bottom: $gutter * 2;
 }
 
-// ==============================================================================
-// #Helper Classes
-// ==============================================================================
-.left { float: left; }
-.right { float: right; }
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.hidden { display: none; }
-
+/*============================================================================
+  #Helper Classes
+==============================================================================*/
 .display-table {
   display: table;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .display-table-cell {
   display: table-cell;
   vertical-align: middle;
+  float: none;
 }
 
+@include at-query ($min, $large) {
+  .large--display-table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+  }
 
-// ==============================================================================
-// #Typography
-// ==============================================================================
+  .large--display-table-cell {
+    display: table-cell;
+    vertical-align: middle;
+    float: none;
+  }
+}
+
+/*============================================================================
+  #Typography
+==============================================================================*/
 body,
 input,
 textarea,
 button,
 select {
-  font-size: 87.5%; // Henseforth known as 1em (assumed at 14px)
+  font-size: $baseFontSize;
   line-height: 1.6;
   font-family: $bodyFontStack;
-  color: $colorText;
+  color: $colorTextBody;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+h1, h2, h3, h4, h5, h6 {
   display: block;
   font-family: $headerFontStack;
-  font-weight: normal;
-  margin-bottom: 0.5em;
+  font-weight: $headerFontWeight;
+  margin: 0 0 0.5em;
   line-height: 1.4;
 
   a {
     text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  // Add some top margin to headers from the rich text editor
-  .rte & {
-    margin-top: 0.2em;
+    font-weight: inherit;
   }
 }
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
-.h1 a, .h2 a, .h3 a, .h4 a, .h5 a, .h6 a { font-weight: inherit; }
 
-// Pixel to EM conversion tool http://pxtoem.com/
-h1, .h1 { font-size: 3em; }       // 42px
-h2, .h2 { font-size: 2.429em; }   // 34px
-h3, .h3 { font-size: 2em; }       // 28px
-h4, .h4 { font-size: 1.429em; }   // 20px
-h5, .h5 { font-size: 1.143em; }   // 16px
-h6, .h6 { font-size: 1em; }       // 14px
+/*================ Use em() Sass function to declare font-size ================*/
+h1 {
+  font-size: em(36px);
+}
 
-p { margin: 0 0 0.75em 0; }
-p img { margin: 0; }
+h2 {
+  font-size: em(28px);
+}
 
-em { font-style: italic; }
-strong { font-weight: bold; }
-small { font-size: 80%; }
+h3 {
+  font-size: em(22px);
+}
 
-// Blockquotes
+h4 {
+  font-size: em(20px);
+}
+
+h5 {
+  font-size: em(16px);
+}
+
+h6 {
+  font-size: em(14px);
+}
+
+
+.h1 { @extend h1; }
+.h2 { @extend h2; }
+.h3 { @extend h3; }
+.h4 { @extend h4; }
+.h5 { @extend h5; }
+.h6 { @extend h6; }
+
+p {
+  margin: 0 0 ($gutter / 2) 0;
+
+  img {
+    margin: 0;
+  }
+}
+
+em {
+  font-style: italic;
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+small {
+  font-size: 0.9em;
+}
+
+sup, sub {
+  position: relative;
+  font-size: 60%;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.5em;
+}
+
+/*================ Blockquotes ================*/
 blockquote {
   font-size: 1.125em;
   line-height: 1.45;
-  color: $colorTextGrey;
   font-style: italic;
   margin: 0 0 $gutter;
-  padding: $gutter/2 $gutter;
-  border-left: 1px solid $borderColor;
+  padding: ($gutter / 2) $gutter;
+  border-left: 1px solid $colorBorder;
 
   p {
     margin-bottom: 0;
 
     & + cite {
-      margin-top: $gutter/2;
+      margin-top: $gutter / 2;
     }
   }
 
   cite {
     display: block;
     font-size: 0.75em;
-    color: $colorTextGrey;
 
     &:before {
-      content: "\2014 \0020";
+      content: '\2014 \0020';
     }
   }
 }
 
+/*================ Code ================*/
+code, pre {
+  background-color: #faf7f5;
+  font-family: Consolas,monospace;
+  font-size: 1em;
+  border: 0 none;
+  padding: 0 2px;
+  color: #51ab62;
+}
+
+pre {
+  overflow: auto;
+  padding: $gutter / 2;
+  margin: 0 0 $gutter;
+}
+
+/*================ Horizontal Rules ================*/
 hr {
   clear: both;
-  border-top: solid $borderColor;
+  border-top: solid $colorBorder;
   border-width: 1px 0 0;
-  margin: $gutter*2 0;
+  margin: $gutter 0;
+  height: 0;
 
-  &.hr-small {
-    margin: $gutter 0;
+  &.hr--small {
+    margin: ($gutter / 2) 0;
   }
 
-  &.hr-clear {
-    border-top: 0 none;
+  &.hr--clear {
+    border-top-color: transparent;
   }
 }
 
-.page-header {
-  @extend .clearfix;
-  border-bottom: 1px solid $borderColor;
-  margin-bottom: $gutter;
+/*================ Section Headers ================*/
+.section-header {
+  margin-bottom: $gutter / 1.5;
 }
 
-// ==============================================================================
-// #Rich Text Editor
-// ==============================================================================
+@include at-query ($min, $large) {
+  .section-header {
+    display: table;
+    width: 100%;
+  }
+
+  .section-header__title {
+    margin-bottom: $gutter / 2.5;
+  }
+
+  .section-header__left {
+    display: table-cell;
+    vertical-align: middle;
+    margin-bottom: 0;
+
+    h1, h2, h3, h4,
+    .h1, .h2, .h3, .h4 {
+      margin-bottom: 0;
+    }
+  }
+
+  .section-header__right {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+    width: 335px;
+
+    @include at-query ($max, $medium) {
+      margin-bottom: $gutter;
+    }
+  }
+}
+
+.section-header__right {
+  .form-horizontal,
+  .collection-view {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  @include at-query ($min, $postSmall) {
+    label + select,
+    .collection-view {
+      margin-left: $gutter / 2;
+    }
+  }
+}
+
+.collection-view {
+  display: inline-block;
+  border: 1px solid $colorBorder;
+  border-radius: $radius;
+  padding: 0 5px;
+  height: 37px; // same as form elements
+  overflow: hidden;
+
+  /*================ Only show on larger screens ================*/
+  @include at-query ($min, $large) {
+    display: inline-block;
+  }
+}
+
+.change-view {
+  display: block;
+  background: none;
+  border: 0 none;
+  float: left;
+  padding: 10px 8px;
+  color: $colorBorder;
+  line-height: 1;
+
+  &:hover,
+  &:focus {
+    color: $colorPrimary;
+  }
+}
+
+.change-view--active {
+  cursor: default;
+  color: $colorPrimary;
+}
+
+/*============================================================================
+  #Rich Text Editor
+==============================================================================*/
 .rte {
-  margin-bottom: 1em;
+  margin-bottom: $gutter / 2;
+
+  // Add some top margin to headers from the rich text editor
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 2em;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  > div {
+    margin-bottom: $gutter / 2;
+  }
+
+  ul, ol {
+    margin-left: 35px;
+  }
+
+  ul {
+    @extend ul.disc;
+  }
+
+  li {
+    margin-bottom: 0.4em;
+  }
 }
 
-// ==============================================================================
-// #Links
-// ==============================================================================
-a, a:visited {
+.rte--header {
+  margin-bottom: 0;
+}
+
+/*============================================================================
+  #Links and Buttons
+==============================================================================*/
+a,
+.text-link {
   color: $colorLink;
   text-decoration: underline;
+  background: transparent;
 }
 
 a:hover,
@@ -167,28 +353,137 @@ a:focus {
   color: $colorLinkHover;
 }
 
+button {
+  overflow: visible;
+}
 
-// ==============================================================================
-// #Lists
-// ==============================================================================
-ul, ol { margin-bottom: 1em; }
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 10px;
+  margin: 0;
+  line-height: 1.42;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  @include prefix('user-select', 'none');
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border-radius: $radius;
+
+  /*================ Set primary button colors - can override later ================*/
+  background-color: $colorBtnPrimary;
+  color: $colorBtnPrimaryText;
+
+  &:hover {
+    background-color: $colorBtnPrimaryHover;
+    color: $colorBtnPrimaryText;
+  }
+
+  &:active,
+  &:focus {
+   background-color: $colorBtnPrimaryActive;
+   color: $colorBtnPrimaryText;
+  }
+
+  &[disabled],
+  &.disabled {
+    cursor: default;
+    color: $disabledBorder;
+    background-color: $disabledGrey;
+  }
+}
+
+.btn--secondary,
+input.btn--secondary {
+  @extend .btn;
+  background-color: $colorBtnSecondary;
+
+  &:hover {
+    background-color: $colorBtnSecondaryHover;
+    color: $colorBtnSecondaryText;
+  }
+
+  &:active,
+  &:focus {
+   background-color: $colorBtnSecondaryActive;
+   color: $colorBtnSecondaryText;
+  }
+}
+
+.btn--small {
+  padding: 4px 5px;
+  font-size: em(12px);
+}
+
+.btn--large {
+  padding: 12px 15px;
+  font-size: em(16px);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+/*================ Force an input/button to look like a text link ================*/
+.text-link {
+  display: inline;
+  border: 0 none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+/*============================================================================
+  #Lists
+==============================================================================*/
+ul, ol {
+  margin: 0 0 $gutter;
+  padding: 0;
+}
+
 ul { list-style: none outside; }
 ol { list-style: decimal; }
+ul ul, ul ol,
+ol ol, ol ul { margin: 4px 0 5px 20px; }
+li { margin-bottom: 0.25em; }
+
 ol, ul.square, ul.disc { margin-left: 20px; }
 ul.square { list-style: square outside; }
 ul.disc { list-style: disc outside; }
 ol.alpha { list-style: lower-alpha outside; }
-ul ul, ul ol,
-ol ol, ol ul { margin: 4px 0 5px 20px; }
-li { margin-bottom: 0.25em; }
-.inline-list li { display: inline-block; }
 
-// ==============================================================================
-// #Tables
-// ==============================================================================
+.inline-list li {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+/*============================================================================
+  #Tables
+==============================================================================*/
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
 table.full {
   width: 100%;
   margin-bottom: 1em;
+}
+
+.table-wrap {
+  max-width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 th {
@@ -197,15 +492,15 @@ th {
 
 th, td {
   text-align: left;
-  padding: $gutter/2;
-  border: 1px solid $borderColor;
+  padding: $gutter / 2;
+  border: 1px solid $colorBorder;
 }
 
 
-// ==============================================================================
-// #OOCSS Media Object
-//  - http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
-// ==============================================================================
+/*============================================================================
+  #OOCSS Media Object
+    - http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
+==============================================================================*/
 .media,
 .media-flex {
   overflow: hidden;
@@ -229,29 +524,68 @@ th, td {
 }
 
 
-// ==============================================================================
-// #Images and Iframes
-// ==============================================================================
+/*============================================================================
+  #Images and Iframes
+==============================================================================*/
+img {
+  border: 0 none;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
 img.auto,
-.grid-item img,
-.grid-item iframe {
+.grid__item img,
+.grid__item iframe {
   max-width: 100%;
+}
+
+.video-wrapper {
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
   height: auto;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 
-// ==============================================================================
-// #Forms
-// ==============================================================================
+/*============================================================================
+  #Forms
+==============================================================================*/
 form {
   margin-bottom: $gutter;
 }
 
-.btn,
-button,
 input,
+textarea,
+button,
+select {
+  font-size: 1em;
+}
+
+button,
+input[type="text"],
+input[type="search"],
+input[type="password"],
+input[type="email"],
+input[type="file"],
+input[type="number"],
+input[type="tel"],
+input[type="submit"],
+input[type="url"],
 textarea {
   -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 input,
@@ -269,13 +603,22 @@ fieldset {
 input,
 select,
 textarea {
-  font-size: 1em;
   padding: 8px 10px;
   line-height: 1.42;
 }
 
 fieldset {
-  padding: $gutter/2 0;
+  border: 1px solid $colorBorder;
+  padding: $gutter / 2;
+}
+
+legend {
+  border: 0;
+  padding: 0;
+}
+
+optgroup {
+  font-weight: bold;
 }
 
 input {
@@ -283,23 +626,34 @@ input {
   width: auto;
 }
 
-/* Input width and border */
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  @extend .btn;
+}
+
+/*================ Input width and border ================*/
 input[type="text"],
+input[type="search"],
 input[type="password"],
 input[type="email"],
 input[type="file"],
 input[type="number"],
 input[type="tel"],
+input[type="url"],
 textarea,
 select {
-  border: 1px solid $borderColor;
+  border: 1px solid $colorBorder;
   width: 100%;
   max-width: 100%;
   display: block;
-  margin-bottom: 1em;
+  margin: 0 0 1em;
 
   &:focus {
-    border: 1px solid darken($borderColor, 10%);
+    border: 1px solid darken($colorBorder, 10%);
   }
 
   &[disabled],
@@ -318,9 +672,44 @@ input[type="checkbox"],
 input[type="radio"] {
   display: inline;
   margin: 0;
+  padding: 0;
 }
 
-/* Form labels */
+select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-position: right center;
+  background: {
+    image: url('{{ "ico-select.svg" | asset_url }}');
+    repeat: no-repeat;
+    position: right 10px center;
+    color: transparent;
+  }
+  padding-right: 28px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  cursor: pointer;
+
+  /*================ Hide the svg arrow in IE9 and below ================*/
+  .ie9 &,
+  .lt-ie9 & {
+    padding-right: 10px;
+    background-image: none;
+  }
+}
+
+// Force option color (affects IE only)
+option {
+  color: #000;
+  background-color: #fff;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/*================ Form labels ================*/
 label,
 legend {
   display: block;
@@ -330,9 +719,25 @@ legend {
   &.inline {
     display: inline;
   }
+
+  .form-horizontal &.label--hidden,
+  &.label--hidden {
+    height: 0;
+    width: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+
+    .ie9 &,
+    .lt-ie9 & {
+      height: auto;
+      width: auto;
+      margin-bottom: 2px;
+      overflow: visible;
+    }
+  }
 }
 
-/* We don't want the same label treatment for checkboxes/radios */
+/*================ We don't want the same label treatment for checkboxes/radios ================*/
 input[type="checkbox"] + label,
 input[type="radio"] + label {
   font-weight: normal;
@@ -346,32 +751,37 @@ label[for] {
   color: #999;
 }
 
-/* Horizontal Form */
+/*================ Horizontal Form ================*/
 form.form-horizontal,
 .form-horizontal {
   margin-bottom: 0;
 
   input[type="text"],
+  input[type="search"],
   input[type="password"],
   input[type="email"],
   input[type="file"],
   input[type="number"],
   input[type="tel"],
+  input[type="url"],
   textarea,
-  select {
+  select,
+  label {
     display: inline-block;
     margin-bottom: 0;
     width: auto;
   }
 }
 
-/* Error styles */
+/*================ Error styles ================*/
 input[type="text"],
+input[type="search"],
 input[type="password"],
 input[type="email"],
 input[type="file"],
 input[type="number"],
 input[type="tel"],
+input[type="url"],
 textarea {
   &.error {
     border-color: $errorRed;
@@ -385,7 +795,7 @@ label.error {
 }
 
 
-/* Input Groups */
+/*================ Input Group ================*/
 .input-group {
   position: relative;
   display: table;
@@ -439,96 +849,132 @@ label.error {
   padding: 0;
 }
 
-// ==============================================================================
-// #Buttons
-// ==============================================================================
-.btn,
-a.btn {
-  display: inline-block;
-  padding: 8px 10px;
-  margin: 0;
-  line-height: 1.42;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  cursor: pointer;
-  color: #fff;
-  border: 1px solid transparent;
-  -webkit-user-select: none;
-  -moz-user-select:    none;
-  -ms-user-select:     none;
-  -o-user-select:      none;
-  user-select:         none;
-  -webkit-appearance: none;
-  border-radius: $radius;
+/*============================================================================
+  #Icons
+==============================================================================*/
+.icon-fallback-text .icon {
+  display: none;
 
-  &.small {
-    padding: 4px 5px;
-    font-size: 0.75em; //12px
-  }
-
-  &.full {
-    width: 100%;
-  }
-
-  // Set primary button colors - can override later
-  background-color: $colorBtnPrimary;
-
-  &:hover {
-    background-color: $colorBtnPrimaryHover;
-    color: #fff;
-  }
-
-  &:active {
-   background-color: $colorBtnPrimaryActive;
-   color: #fff;
-  }
-
-  &[disabled],
-  &.disabled {
-    cursor: default;
-    color: $disabledBorder;
-    background-color: $disabledGrey;
+  .supports-fontface & {
+    display: inline-block;
   }
 }
 
-.btn-secondary,
-a.btn-secondary {
-  @extend .btn;
-  background-color: $colorBtnSecondary;
-
-  &:hover {
-    background-color: $colorBtnSecondaryHover;
-    color: #fff;
-  }
-
-  &:active {
-   background-color: $colorBtnSecondaryActive;
-   color: #fff;
-  }
+/*============================================================================
+  A generic way to visually hide content while
+  remaining accessible to screen readers (h5bp.com)
+==============================================================================*/
+.supports-fontface .icon-fallback-text .fallback-text {
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  position: absolute;
+  height: 1px;
+  width: 1px;
 }
 
-// Force an input/button to look like a text link
-.text-link {
+.icon:before {
+  display: none;
+}
+
+.supports-fontface .icon:before {
   display: inline;
-  border: 0 none;
-  background: none;
-  text-decoration: underline;
-  padding: 0;
-  margin: 0;
+  font-family: $socialIconFontStack;
+  text-decoration: none;
+  speak: none; // future fallback, limited in effect currently
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/*================ Icon mapping ================*/
+.icon-american_express:before { content: "\41"; }
+.icon-arrow-down:before { content: "\34"; }
+.icon-bitcoin:before { content: "\42"; }
+.icon-cart:before { content: "\5b"; }
+.icon-cirrus:before { content: "\43"; }
+.icon-diners_club:before { content: "\63"; }
+.icon-discover:before { content: "\44"; }
+.icon-dankort:before { content: "\64"; }
+.icon-facebook:before { content: "\66"; }
+.icon-fancy:before { content: "\46"; }
+.icon-google:before { content: "\67"; }
+.icon-google_wallet:before { content: "\47"; }
+.icon-grid-view:before { content: "\e603"; }
+.icon-hamburger:before { content: "\e600"; }
+.icon-instagram:before { content: "\69"; }
+.icon-interac:before { content: "\49"; }
+.icon-jcb:before { content: "\4a"; }
+.icon-list-view:before { content: "\e604"; }
+.icon-maestro:before { content: "\6d"; }
+.icon-master:before { content: "\4d"; }
+.icon-minus:before { content: "\e602"; }
+.icon-paypal:before { content: "\50"; }
+.icon-pinterest:before { content: "\70"; }
+.icon-plus:before { content: "\e605"; }
+.icon-rss:before { content: "\72"; }
+.icon-search:before { content: "\73"; }
+.icon-stripe:before { content: "\53"; }
+.icon-tumblr:before { content: "\74"; }
+.icon-twitter:before { content: "\54"; }
+.icon-vimeo:before { content: "\76"; }
+.icon-visa:before { content: "\56"; }
+.icon-x:before { content: "\78"; }
+.icon-youtube:before { content: "\79"; }
 
-// ==============================================================================
-// #Pagination
-// ==============================================================================
+.payment-icons {
+  @include prefix('user-select', 'none');
+  cursor: default;
+
+  li {
+    margin: 0 ($gutter / 4) ($gutter / 4);
+    color: {{ settings.color_footer_social_link }};
+    cursor: default;
+  }
+
+  .icon {
+    font-size: 30px;
+    line-height: 30px;
+  }
+
+  .fallback-text {
+    text-transform: capitalize;
+  }
+}
+
+.social-icons li {
+  margin: 0 ($gutter / 2) ($gutter / 2);
+  vertical-align: middle;
+
+  @include at-query ($min, $postSmall) {
+    margin-left: 0;
+  }
+
+  .icon {
+    font-size: 30px;
+    line-height: 26px;
+  }
+
+  a {
+    color: {{ settings.color_footer_social_link }};
+
+    &:hover {
+      color: darken({{ settings.color_footer_social_link }}, 10%);
+    }
+  }
+}
+
+/*============================================================================
+  #Pagination
+==============================================================================*/
 .pagination {
   margin-bottom: 1em;
 }
 
-/* Custom Pagination */
+/*================ Custom Pagination ================*/
 .pagination-custom {
   display: inline-block;
   padding-left: 0;
@@ -548,8 +994,7 @@ a.btn-secondary {
   margin-left: -1px;
   line-height: 1.42;
   text-decoration: none;
-  background-color: #ffffff;
-  border: 1px solid $borderColor;
+  border: 1px solid $colorBorder;
 }
 
 .pagination-custom > li:first-child > a,
@@ -569,7 +1014,7 @@ a.btn-secondary {
 .pagination-custom > li > span:hover,
 .pagination-custom > li > a:focus,
 .pagination-custom > li > span:focus {
-  background-color: #eeeeee;
+  // hover color
 }
 
 .pagination-custom > .active > a,
@@ -579,10 +1024,8 @@ a.btn-secondary {
 .pagination-custom > .active > a:focus,
 .pagination-custom > .active > span:focus {
   z-index: 2;
-  color: #ffffff;
   cursor: default;
-  background-color: $colorBtnPrimary;
-  border-color: $colorBtnPrimary;
+  color: $colorTextBody;
 }
 
 .pagination-custom > .disabled > span,
@@ -591,13 +1034,12 @@ a.btn-secondary {
 .pagination-custom > .disabled > a:focus {
   color: #999999;
   cursor: not-allowed;
-  background-color: $disabledGrey;
 }
 
 .pagination-custom-lg > li > a,
 .pagination-custom-lg > li > span {
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: em(18px);
 }
 
 .pagination-custom-lg > li:first-child > a,
@@ -615,7 +1057,7 @@ a.btn-secondary {
 .pagination-custom-sm > li > a,
 .pagination-custom-sm > li > span {
   padding: 5px 10px;
-  font-size: 0.75em;
+  font-size: em(12px);
 }
 
 .pagination-custom-sm > li:first-child > a,
@@ -631,59 +1073,92 @@ a.btn-secondary {
 }
 
 
-// ==============================================================================
-// #Site Header
-// ==============================================================================
+/*============================================================================
+  #Site Header
+==============================================================================*/
 .site-header {
-  padding: $gutter 0;
-}
+  padding: ($gutter / 2) 0;
 
-.header-logo {
-  margin-bottom: 0;
-
-  @include at-query($min, $medium) {
-    float: left;
+  @include at-query ($min, $large) {
+    padding: $gutter 0;
   }
 
-  @include at-query($max, $medium) {
-    img {
-      margin: 0 auto;
-      margin-bottom: 0.5em;
+  @include at-query ($min, $large) {
+    .grid {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+
+      > .grid__item {
+        float: none;
+        display: table-cell;
+        vertical-align: middle;
+      }
     }
+  }
+}
+
+.site-header__logo {
+  text-align: center;
+  margin: 0 auto ($gutter / 2);
+  max-width: {{ settings.logo_max_width }}px;
+
+  @include at-query ($min, $large) {
+    margin-bottom: 0;
   }
 
   a,
   a:hover,
   a:focus {
-    color: $colorText;
     text-decoration: none;
   }
 
   a, img {
     display: block;
   }
+
+  img {
+    margin: 0 auto;
+  }
 }
 
-// ==============================================================================
-// #Site Nav and Dropdowns
-// ==============================================================================
+.site-header__text-links {
+  margin-bottom: 0;
+}
+
+.search-bar {
+  max-width: 100%;
+
+  @include at-query ($max, $medium) {
+    margin: 0 auto;
+  }
+}
+
+/*============================================================================
+  #Site Nav and Dropdowns
+==============================================================================*/
 .nav-bar {
   background-color: $colorNav;
-}
 
-.nav-bar ul {
-  margin: 0;
+  ul {
+    margin: 0;
+  }
+
+  li {
+    margin: 0;
+  }
 }
 
 .site-nav {
-  font-size: 1.2em;
+  font-size: em(16px);
+  cursor: default;
 
   li {
     margin: 0;
     display: block;
   }
 
-  & > li {
+  > li {
     position: relative;
     display: inline-block;
 
@@ -692,31 +1167,40 @@ a.btn-secondary {
     }
   }
 
-  a {
-    display: block;
-    text-decoration: none;
-    padding: $gutter/2;
-    white-space: nowrap;
-  }
-
-  @include at-query($max, $medium) {
+  @include at-query ($max, $medium) {
     margin: 0 auto;
     text-align: center;
   }
+}
 
-  @include at-query($min, $medium) {
-    float: left;
+.site-nav__link {
+  display: block;
+  text-decoration: none;
+  padding: $gutter / 2;
+  white-space: nowrap;
+  color: $colorNavText;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: darken($colorNavText, 15%);
+  }
+
+  .site-nav--active > & {
+    font-weight: bold;
   }
 }
 
-// Dropdowns
-.site-nav-dropdown {
+/*================ Dropdowns ================*/
+.site-nav__dropdown {
   display: none;
   position: absolute;
   left: 0;
   z-index: 5;
 
-  .site-nav li:hover & {
+  .supports-no-touch .site-nav--has-dropdown:hover &,
+  .site-nav--has-dropdown.nav-hover &,
+  .nav-focus + & {
     display: block;
   }
 
@@ -724,72 +1208,48 @@ a.btn-secondary {
     background-color: $colorNav;
 
     &:hover,
-    &:active {
+    &:active,
+    &:focus {
       background-color: darken($colorNav, 10%);
     }
   }
 }
 
-// Search bar in header
+/*================ Search bar in header ================*/
 .nav-search {
-  padding: 7px 0;
+  position: relative;
+  padding: 10px 0;
 
-  @include at-query($max, $medium) {
-    padding: 0 0 $gutter/2;
+  @include at-query ($max, $medium) {
+    padding: 0 0 ($gutter / 2);
     margin: 0 auto;
     text-align: center;
-  }
-
-  @include at-query($min, $medium) {
-    float: right;
   }
 
   .input-group,
   .input-group-field {
     margin-bottom: 0;
   }
-
-  .search-bar {
-    max-width: 300px;
-
-    @include at-query($max, $medium) {
-      margin: 0 auto;
-    }
-  }
 }
 
 
-// ==============================================================================
-// #Site Footer
-// ==============================================================================
+/*============================================================================
+  #Site Footer
+==============================================================================*/
 .site-footer {
-  background-color: #f6f6f6;
-  border-top: 1px solid $borderColor;
-  text-align: center;
+  background-color: $colorFooterBg;
+  border-top: 1px solid $colorBorder;
   padding: $gutter 0;
+  color: $colorFooterText;
 
-  @include at-query($min, $medium) {
-    padding: $gutter*2 0;
-    text-align: left;
+  @include at-query ($min, $large) {
+    padding: ($gutter * 2) 0;
   }
 }
 
-// Credit card icon widths (SVG)
-.payment-icons {
-  li {
-    width: 48px;
-    margin: 0 $gutter/4;
-  }
-}
-
-// We use SVG images for the credit card icons, and SVG is not supported in IE8.
-.lt-ie9 .payment-icons {
-  display: none;
-}
-
-// ==============================================================================
-// #Product Grid and List Views
-// ==============================================================================
+/*============================================================================
+  #Product and Collection Grids
+==============================================================================*/
 .sold-out {
 
 }
@@ -798,45 +1258,46 @@ a.btn-secondary {
 
 }
 
-.product-list-thumb {
+.grid__image {
   display: block;
-  float: left;
-  margin-right: $gutter;
-  margin-bottom: $gutter;
-}
-
-.product-grid-image {
-  display: block;
+  margin: 0 auto ($gutter / 2);
 
   img {
+    display: block;
     margin: 0 auto;
   }
 }
 
-// ==============================================================================
-// #Tag list
-// ==============================================================================
-.active-tag {
+/*============================================================================
+  #Collection Filters
+==============================================================================*/
+.filter--active {
   font-weight: bold;
 }
 
-// ==============================================================================
-// #Breadcrumbs
-// ==============================================================================
+/*============================================================================
+  #Breadcrumbs
+==============================================================================*/
 .breadcrumb {
-  font-size: 0.75em; //12px
-  margin-bottom: 1em;
+  margin-bottom: $gutter;
+
+  a,
+  span {
+    display: inline-block;
+    padding: ($gutter / 2) 7px ($gutter / 2) 0;
+    margin-right: 7px;
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
 }
 
 
-// ==============================================================================
-// #Product Page
-// ==============================================================================
-.product-price {
-  font-weight: bold;
-}
-
-.product-variants {
+/*============================================================================
+  #Product Page
+==============================================================================*/
+.product-single__variants {
   display: none;
 
   .no-js & {
@@ -844,30 +1305,55 @@ a.btn-secondary {
   }
 }
 
-.product-photo-container {
+@include at-query($min, $large) {
+  .selector-wrapper,
+  .product-single__variants {
+    select {
+      max-width: 40%;
+    }
+  }
+}
+
+.product-single__photos {
   margin-bottom: $gutter;
 }
 
-.product-photo-container,
-.product-photo-thumbs {
+.product-single__photos,
+.product-single__thumbnails {
   a, img {
     display: block;
+    margin: 0 auto;
   }
+
   li {
     margin-bottom: $gutter;
   }
 }
 
+/*============================================================================
+  #Blogs and Comments
+==============================================================================*/
+.comment {
+  margin-bottom: $gutter;
 
-// ==============================================================================
-// #Notes and Form Feedback
-// ==============================================================================
+  & + & {
+    border-top: 1px solid $colorBorder;
+    padding-top: $gutter;
+  }
+}
+
+
+/*============================================================================
+  #Notes and Form Feedback
+==============================================================================*/
 .note,
 .errors {
   border-radius: $radius;
-  padding: $gutter/2;
-  margin-bottom: 1em;
+  padding: 6px 12px;
+  margin-bottom: $gutter / 2;
   border: 1px solid transparent;
+  font-size: 0.9em;
+  text-align: left;
 
   ul,
   ol {
@@ -885,7 +1371,7 @@ a.btn-secondary {
 }
 
 .note {
-  border-color: $borderColor;
+  border-color: $colorBorder;
 }
 
 .errors {
@@ -897,8 +1383,17 @@ a.btn-secondary {
 
 .form-success {
   color: $successGreen;
-  background-color: lighten($successGreen, 65%);
+  background-color: $successGreenBg;
   border-color: $successGreen;
+
+  a {
+    color: $successGreen;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 .form-error,
@@ -906,20 +1401,80 @@ a.btn-secondary {
   color: $errorRed;
   background-color: $errorRedBg;
   border-color: $errorRed;
+
+  a {
+    color: $errorRed;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 
-// ==============================================================================
-// #Cart Page
-// ==============================================================================
-.cart-row {
-  margin-bottom: $gutter;
-  padding-bottom: $gutter;
-  border-bottom: 1px solid $borderColor;
+/*============================================================================
+  #Cart Page
+==============================================================================*/
+.cart__row {
+  position: relative;
+  margin-top: $gutter;
+  padding-top: $gutter;
+  border-top: 1px solid $colorBorder;
 
-  .ajaxifyCart--content & {
-    border-bottom-color: #444;
+  &:first-child {
+    margin-top: 0;
   }
+
+  &:first-child {
+    padding-top: 0;
+    border-top: 0 none;
+  }
+
+  .js-qty {
+    margin: 0;
+  }
+}
+
+@include at-query ($min, $large) {
+  .cart__row--table-large {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+
+    .grid__item {
+      display: table-cell;
+      vertical-align: middle;
+      float: none;
+    }
+  }
+}
+
+.cart__image {
+  display: block;
+
+  img {
+    display: block;
+  }
+}
+
+.cart__subtotal {
+  margin: 0 0 0 ($gutter / 3);
+  display: inline;
+}
+
+.cart__mini-labels {
+  display: block;
+  margin: ($gutter / 3) 0;
+  font-size: em(12px);
+
+  @include at-query ($min, $large) {
+    display: none;
+  }
+}
+
+.cart__remove {
+  display: block;
 }
 
 // ==============================================================================
