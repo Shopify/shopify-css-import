@@ -26,7 +26,7 @@ $breakpoint-has-pull:  ('medium', 'medium-down', 'large');
   #General Variables
 ==============================================================================*/
 
-// Primary Colors
+// Timber Colors
 $colorPrimary: {{ settings.color_primary }};
 $colorSecondary: {{ settings.color_secondary }};
 
@@ -70,11 +70,23 @@ $errorRedBg: #fff6f6;
 $successGreen: #56ad6a;
 $successGreenBg: #ecfef0;
 
+// Drawers
+$drawerNavWidth: 300px;
+$drawerCartWidth: 300px;
+$colorDrawers: #f6f6f6;
+$colorDrawerBorder: darken($colorDrawers, 5%);
+$colorDrawerText: #333;
+$drawerTransition: 'all 0.4s cubic-bezier(0.46, 0.01, 0.32, 1)';
+
 // Sizing variables
 $siteWidth: 1180px;
 $gutter: 30px;
 $gridGutter: 30px; // can be a %, but nested grids will have smaller margins because of it
 $radius: 3px;
+
+// Z-index
+$zindexNavDropdowns: 5;
+$zindexDrawer: 10;
 
 /*================ Typography ================*/
 
@@ -128,6 +140,10 @@ $socialIconFontStack: 'icons';
   @include prefix('transition', #{$transition});
 }
 
+@mixin transform($transform: 0.1s all) {
+  @include prefix('transform', #{$transform});
+}
+
 @mixin gradient($from, $to, $fallback) {
   background: $fallback;
   background: -moz-linear-gradient(top, $from 0%, $to 100%);
@@ -166,11 +182,16 @@ $socialIconFontStack: 'icons';
 
 /*============================================================================
   Dependency-free breakpoint mixin
-    - http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
+    - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
+    - Usage docs: http://shopify.github.io/Timber/#sass-mixins
 ==============================================================================*/
 $min: min-width;
 $max: max-width;
-@mixin at-query ($constraint, $viewport1, $viewport2:null) {
+@mixin at-query ($constraint_, $viewport1_, $viewport2_:null) {
+ $constraint: $constraint_; $viewport1: $viewport1_; $viewport2: $viewport2_;
+  @if type-of($constraint_) == number {
+    $viewport1 : $constraint_; $viewport2 : $viewport1_; $constraint : null;
+  }
   @if $constraint == $min {
     @media screen and ($min: $viewport1) {
       @content;
