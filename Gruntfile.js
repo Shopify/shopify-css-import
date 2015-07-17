@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 
     gulp: {
       concat: function() {
-        return gulp.src(globalConfig.src + '/**/*.*')
+        return gulp.src(globalConfig.src + '/**/[^_]*.*')
           .pipe(cssimport())
           .pipe(gulp.dest('assets/'));
       }
