@@ -1,3 +1,9 @@
+/*============================================================================
+  #Grid Setup
+    - Based on csswizardry grid, but with floated columns, a fixed gutter size, and BEM classes
+    - Breakpoints defined above, under #Breakpoint and Grid Variables
+    - Note the inclusion of .grid-uniform to take care of clearfixes on evenly sized grid items
+==============================================================================*/
 $responsive:         true;
 $mobile-first:       true;
 $use-silent-classes: false;
@@ -9,7 +15,6 @@ $class-type: unquote(".");
 @if $use-silent-classes == true {
   $class-type: unquote("%");
 }
-
 
 @mixin grid-media-query($media-query) {
   $breakpoint-found: false;
@@ -146,7 +151,7 @@ $class-type: unquote(".");
 
 /*============================================================================
   PUSH
-    - Push mixins, to move grid items over to the right by certain amounts
+    - Push classes, to move grid items over to the right by certain amounts
 ==============================================================================*/
 @mixin push-setup($namespace: "") {
   /* Whole */
@@ -213,7 +218,7 @@ $class-type: unquote(".");
 
 /*============================================================================
   PULL
-    - Pull mixins, to move grid items back to the left by certain amounts
+    - Pull classes, to move grid items back to the left by certain amounts
 ==============================================================================*/
 @mixin pull-setup($namespace: "") {
   /* Whole */
