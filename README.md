@@ -9,6 +9,8 @@ In the example `css/` folder there is a single `theme.scss.liquid` file that imp
 
 You can use Grunt or Gulp to achieve the same effect.
 
+The theme files included in this repo are just for the example. Find the [latest version of Timber here](https://github.com/Shopify/timber).
+
 ### Requirements
 - Ruby 1.9+
 - Node.js 0.10.22+ ([check and upgrade Node.js here](http://stackoverflow.com/questions/20887400/gruntjs-bus-error-grunt-watch))
