@@ -1,3 +1,12 @@
+## Deprecation warning ⚠️
+
+Instead of these one-off grunt/gulp build tasks, developers are encouraged to check out [Slate](https://github.com/Shopify/slate) -
+a theme scaffolding and command line tool built for developing Shopify themes.
+
+You can continue to use these tasks; however, this repo will not be kept up-to-date with changes in Shopify theme development.
+
+---
+
 Adding CSS @import to theme development
 =====================
 
