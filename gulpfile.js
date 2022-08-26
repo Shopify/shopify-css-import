@@ -8,7 +8,7 @@ var globalConfig = {
 
 // Process CSS
 gulp.task('styles', function(){
-  return gulp.src(globalConfig.src + '/**/*.*')
+  return gulp.src(globalConfig.src + '/**/[^_]*.*')
     .pipe(cssimport())
     .pipe(gulp.dest('assets/'));
 })

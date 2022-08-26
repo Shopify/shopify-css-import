@@ -33,6 +33,15 @@ body {
 /*============================================================================
   #Helper Classes
 ==============================================================================*/
+.clearfix {
+  @include clearfix();
+}
+
+.is-transitioning {
+  display: block !important;
+  visibility: visible !important;
+}
+
 .display-table {
   display: table;
   table-layout: fixed;
@@ -57,6 +66,14 @@ body {
     vertical-align: middle;
     float: none;
   }
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px; width: 1px;
+  margin: -1px; padding: 0; border: 0;
 }
 
 /*============================================================================
@@ -308,6 +325,10 @@ hr {
 .rte {
   margin-bottom: $gutter / 2;
 
+  a {
+    text-decoration: underline;
+  }
+
   // Add some top margin to headers from the rich text editor
   h1, h2, h3, h4, h5, h6 {
     margin-top: 2em;
@@ -315,18 +336,14 @@ hr {
     &:first-child {
       margin-top: 0;
     }
+
+    a {
+      text-decoration: none;
+    }
   }
 
   > div {
     margin-bottom: $gutter / 2;
-  }
-
-  ul, ol {
-    margin-left: 35px;
-  }
-
-  ul {
-    @extend ul.disc;
   }
 
   li {
@@ -344,7 +361,7 @@ hr {
 a,
 .text-link {
   color: $colorLink;
-  text-decoration: underline;
+  text-decoration: none;
   background: transparent;
 }
 
@@ -362,9 +379,11 @@ html input[disabled] {
   cursor: default;
 }
 
-.btn {
+.btn,
+.rte .btn {
   display: inline-block;
   padding: 8px 10px;
+  width: auto;
   margin: 0;
   line-height: 1.42;
   font-weight: bold;
@@ -374,7 +393,7 @@ html input[disabled] {
   white-space: nowrap;
   cursor: pointer;
   border: 1px solid transparent;
-  @include prefix('user-select', 'none');
+  @include user-select(none);
   -webkit-appearance: none;
   -moz-appearance: none;
   border-radius: $radius;
@@ -403,7 +422,7 @@ html input[disabled] {
 }
 
 .btn--secondary,
-input.btn--secondary {
+.rte .btn--secondary {
   @extend .btn;
   background-color: $colorBtnSecondary;
 
@@ -446,24 +465,31 @@ input.btn--secondary {
   #Lists
 ==============================================================================*/
 ul, ol {
-  margin: 0 0 $gutter;
+  margin: 0 0 ($gutter / 2) 20px;
   padding: 0;
 }
 
-ul { list-style: none outside; }
 ol { list-style: decimal; }
 ul ul, ul ol,
 ol ol, ol ul { margin: 4px 0 5px 20px; }
 li { margin-bottom: 0.25em; }
 
-ol, ul.square, ul.disc { margin-left: 20px; }
 ul.square { list-style: square outside; }
 ul.disc { list-style: disc outside; }
 ol.alpha { list-style: lower-alpha outside; }
 
-.inline-list li {
-  display: inline-block;
-  margin-bottom: 0;
+.no-bullets {
+  list-style: none outside;
+  margin-left: 0;
+}
+
+.inline-list {
+  margin-left: 0;
+
+  li {
+    display: inline-block;
+    margin-bottom: 0;
+  }
 }
 
 /*============================================================================
@@ -494,6 +520,77 @@ th, td {
   text-align: left;
   padding: $gutter / 2;
   border: 1px solid $colorBorder;
+}
+
+/*============================================================================
+  Responsive tables, defined with .table--responsive on table element.
+  Only defined for IE9+
+==============================================================================*/
+.table--responsive {
+  @include at-query($max, $small) {
+    thead {
+      display: none;
+    }
+
+    tr {
+      display: block;
+    }
+
+    // IE9 table layout fixes
+    tr,
+    td {
+      float: left;
+      clear: both;
+      width: 100%;
+    }
+
+    th,
+    td {
+      display: block;
+      text-align: right;
+      padding: 15px;
+    }
+
+    td:before {
+      content: attr(data-label);
+      float: left;
+      text-align: center;
+      font-size: 12px;
+      padding-right: 10px;
+    }
+
+    &.cart-table {
+      img {
+        margin: 0 auto;
+      }
+
+      .js-qty {
+        float: right;
+      }
+    }
+  }
+}
+
+@include at-query($max, $small) {
+  .table--small-hide {
+    display: none !important;
+  }
+
+  .table__section + .table__section {
+    position: relative;
+    margin-top: 10px;
+    padding-top: 15px;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 15px;
+      right: 15px;
+      border-bottom: 1px solid $colorBorder;
+    }
+  }
 }
 
 
@@ -535,9 +632,8 @@ svg:not(:root) {
   overflow: hidden;
 }
 
-img.auto,
-.grid__item img,
-.grid__item iframe {
+img,
+iframe {
   max-width: 100%;
 }
 
@@ -563,48 +659,53 @@ img.auto,
   #Forms
 ==============================================================================*/
 form {
-  margin-bottom: $gutter;
+  margin-bottom: 0;
+}
+
+.form-vertical {
+  margin-bottom: $gutter / 2;
+}
+
+/*================ Prevent zoom on touch devices in active inputs ================*/
+@include at-query($max, $medium) {
+  input,
+  textarea {
+    font-size: 16px;
+  }
 }
 
 input,
 textarea,
 button,
 select {
-  font-size: 1em;
+  padding: 0;
+  margin: 0;
+  @include user-select(text);
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 button,
-input[type="text"],
-input[type="search"],
-input[type="password"],
-input[type="email"],
-input[type="file"],
-input[type="number"],
-input[type="tel"],
-input[type="submit"],
-input[type="url"],
+input,
 textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
 
-input,
-textarea,
-select,
-fieldset {
-  border-radius: $radius;
-  max-width: 100%;
-
-  &.input-full {
-    width: 100%;
-  }
+button {
+  background: none;
+  border: none;
+  display: inline-block;
+  cursor: pointer;
 }
 
-input,
-select,
-textarea {
-  padding: 8px 10px;
-  line-height: 1.42;
+input[type="image"] {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 fieldset {
@@ -617,40 +718,18 @@ legend {
   padding: 0;
 }
 
-optgroup {
-  font-weight: bold;
-}
-
-input {
-  display: inline-block;
-  width: auto;
-}
-
 button,
 input[type="submit"] {
   cursor: pointer;
 }
 
-input[type="submit"] {
-  @extend .btn;
-}
-
-/*================ Input width and border ================*/
-input[type="text"],
-input[type="search"],
-input[type="password"],
-input[type="email"],
-input[type="file"],
-input[type="number"],
-input[type="tel"],
-input[type="url"],
+input,
 textarea,
 select {
   border: 1px solid $colorBorder;
-  width: 100%;
   max-width: 100%;
-  display: block;
-  margin: 0 0 1em;
+  padding: 8px 10px;
+  border-radius: $radius;
 
   &:focus {
     border: 1px solid darken($colorBorder, 10%);
@@ -662,17 +741,38 @@ select {
     background-color: $disabledGrey;
     border-color: $disabledBorder;
   }
+
+  &.input-full {
+    width: 100%;
+  }
 }
 
 textarea {
   min-height: 100px;
 }
 
+/*================ Input element overrides ================*/
 input[type="checkbox"],
 input[type="radio"] {
   display: inline;
-  margin: 0;
+  margin: 0 8px 0 0;
   padding: 0;
+  width: auto;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+}
+
+input[type="radio"] {
+  -webkit-appearance: radio;
+  -moz-appearance: radio;
+}
+
+input[type="image"] {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 select {
@@ -699,6 +799,10 @@ select {
   }
 }
 
+optgroup {
+  font-weight: bold;
+}
+
 // Force option color (affects IE only)
 option {
   color: #000;
@@ -710,78 +814,48 @@ select::-ms-expand {
 }
 
 /*================ Form labels ================*/
-label,
-legend {
-  display: block;
-  margin-bottom: 2px;
-  font-weight: bold;
+.hidden-label {
+  position: absolute;
+  height: 0;
+  width: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
 
-  &.inline {
-    display: inline;
+  // No placeholders, so force show labels
+  .ie9 &,
+  .lt-ie9 & {
+    position: static;
+    height: auto;
+    width: auto;
+    margin-bottom: 2px;
+    overflow: visible;
+    clip: initial;
   }
-
-  .form-horizontal &.label--hidden,
-  &.label--hidden {
-    height: 0;
-    width: 0;
-    margin-bottom: 0;
-    overflow: hidden;
-
-    .ie9 &,
-    .lt-ie9 & {
-      height: auto;
-      width: auto;
-      margin-bottom: 2px;
-      overflow: visible;
-    }
-  }
-}
-
-/*================ We don't want the same label treatment for checkboxes/radios ================*/
-input[type="checkbox"] + label,
-input[type="radio"] + label {
-  font-weight: normal;
 }
 
 label[for] {
   cursor: pointer;
 }
 
-.label-hint {
-  color: #999;
-}
-
 /*================ Horizontal Form ================*/
-form.form-horizontal,
-.form-horizontal {
-  margin-bottom: 0;
-
-  input[type="text"],
-  input[type="search"],
-  input[type="password"],
-  input[type="email"],
-  input[type="file"],
-  input[type="number"],
-  input[type="tel"],
-  input[type="url"],
-  textarea,
+.form-vertical {
+  input,
   select,
-  label {
+  textarea {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  input[type="radio"],
+  input[type="checkbox"] {
     display: inline-block;
-    margin-bottom: 0;
-    width: auto;
   }
 }
 
 /*================ Error styles ================*/
-input[type="text"],
-input[type="search"],
-input[type="password"],
-input[type="email"],
-input[type="file"],
-input[type="number"],
-input[type="tel"],
-input[type="url"],
+input,
+select,
 textarea {
   &.error {
     border-color: $errorRed;
@@ -839,7 +913,6 @@ label.error {
 
 .input-group .input-group-field {
   width: 100%;
-  margin-bottom: 0;
 }
 
 .input-group-btn {
@@ -865,11 +938,7 @@ label.error {
   remaining accessible to screen readers (h5bp.com)
 ==============================================================================*/
 .supports-fontface .icon-fallback-text .fallback-text {
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  position: absolute;
-  height: 1px;
-  width: 1px;
+  @extend .visually-hidden;
 }
 
 .icon:before {
@@ -892,19 +961,19 @@ label.error {
 
 /*================ Icon mapping ================*/
 .icon-american_express:before { content: "\41"; }
-.icon-arrow-down:before { content: "\34"; }
+.icon-arrow-down:before { content: "\e607"; }
 .icon-bitcoin:before { content: "\42"; }
-.icon-cart:before { content: "\5b"; }
+.icon-cart:before { content: "\e600"; }
 .icon-cirrus:before { content: "\43"; }
+.icon-dankort:before { content: "\64"; }
 .icon-diners_club:before { content: "\63"; }
 .icon-discover:before { content: "\44"; }
-.icon-dankort:before { content: "\64"; }
 .icon-facebook:before { content: "\66"; }
 .icon-fancy:before { content: "\46"; }
 .icon-google:before { content: "\67"; }
 .icon-google_wallet:before { content: "\47"; }
 .icon-grid-view:before { content: "\e603"; }
-.icon-hamburger:before { content: "\e600"; }
+.icon-hamburger:before { content: "\e601"; }
 .icon-instagram:before { content: "\69"; }
 .icon-interac:before { content: "\49"; }
 .icon-jcb:before { content: "\4a"; }
@@ -922,11 +991,11 @@ label.error {
 .icon-twitter:before { content: "\54"; }
 .icon-vimeo:before { content: "\76"; }
 .icon-visa:before { content: "\56"; }
-.icon-x:before { content: "\78"; }
+.icon-x:before { content: "\e606"; }
 .icon-youtube:before { content: "\79"; }
 
 .payment-icons {
-  @include prefix('user-select', 'none');
+  @include user-select(none);
   cursor: default;
 
   li {
@@ -972,106 +1041,22 @@ label.error {
 ==============================================================================*/
 .pagination {
   margin-bottom: 1em;
-}
+  text-align: center;
 
-/*================ Custom Pagination ================*/
-.pagination-custom {
-  display: inline-block;
-  padding-left: 0;
-  margin: 0 0 $gutter;
-  border-radius: $radius;
-}
+  > span {
+    display: inline-block;
+    line-height: 1;
+  }
 
-.pagination-custom > li {
-  display: inline;
-}
+  a {
+    display: block;
+  }
 
-.pagination-custom > li > a,
-.pagination-custom > li > span {
-  position: relative;
-  float: left;
-  padding: 5px 10px;
-  margin-left: -1px;
-  line-height: 1.42;
-  text-decoration: none;
-  border: 1px solid $colorBorder;
+  a,
+  .page.current {
+    padding: 8px;
+  }
 }
-
-.pagination-custom > li:first-child > a,
-.pagination-custom > li:first-child > span {
-  margin-left: 0;
-  border-bottom-left-radius: 4px;
-  border-top-left-radius: 4px;
-}
-
-.pagination-custom > li:last-child > a,
-.pagination-custom > li:last-child > span {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.pagination-custom > li > a:hover,
-.pagination-custom > li > span:hover,
-.pagination-custom > li > a:focus,
-.pagination-custom > li > span:focus {
-  // hover color
-}
-
-.pagination-custom > .active > a,
-.pagination-custom > .active > span,
-.pagination-custom > .active > a:hover,
-.pagination-custom > .active > span:hover,
-.pagination-custom > .active > a:focus,
-.pagination-custom > .active > span:focus {
-  z-index: 2;
-  cursor: default;
-  color: $colorTextBody;
-}
-
-.pagination-custom > .disabled > span,
-.pagination-custom > .disabled > a,
-.pagination-custom > .disabled > a:hover,
-.pagination-custom > .disabled > a:focus {
-  color: #999999;
-  cursor: not-allowed;
-}
-
-.pagination-custom-lg > li > a,
-.pagination-custom-lg > li > span {
-  padding: 10px 16px;
-  font-size: em(18px);
-}
-
-.pagination-custom-lg > li:first-child > a,
-.pagination-custom-lg > li:first-child > span {
-  border-bottom-left-radius: 6px;
-  border-top-left-radius: 6px;
-}
-
-.pagination-custom-lg > li:last-child > a,
-.pagination-custom-lg > li:last-child > span {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-.pagination-custom-sm > li > a,
-.pagination-custom-sm > li > span {
-  padding: 5px 10px;
-  font-size: em(12px);
-}
-
-.pagination-custom-sm > li:first-child > a,
-.pagination-custom-sm > li:first-child > span {
-  border-bottom-left-radius: 3px;
-  border-top-left-radius: 3px;
-}
-
-.pagination-custom-sm > li:last-child > a,
-.pagination-custom-sm > li:last-child > span {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-
 
 /*============================================================================
   #Site Header
@@ -1079,32 +1064,26 @@ label.error {
 .site-header {
   padding: ($gutter / 2) 0;
 
-  @include at-query ($min, $large) {
-    padding: $gutter 0;
-  }
+  .grid--table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
 
-  @include at-query ($min, $large) {
-    .grid {
-      display: table;
-      table-layout: fixed;
-      width: 100%;
-
-      > .grid__item {
-        float: none;
-        display: table-cell;
-        vertical-align: middle;
-      }
+    > .grid__item {
+      float: none;
+      display: table-cell;
+      vertical-align: middle;
     }
   }
 }
 
 .site-header__logo {
   text-align: center;
-  margin: 0 auto ($gutter / 2);
-  max-width: {{ settings.logo_max_width }}px;
+  margin: 0 auto;
+  max-width: 100%;
 
   @include at-query ($min, $large) {
-    margin-bottom: 0;
+    text-align: left;
   }
 
   a,
@@ -1122,15 +1101,28 @@ label.error {
   }
 }
 
-.site-header__text-links {
-  margin-bottom: 0;
+.site-header__logo-link {
+  max-width: $logoMaxWidth;
+  margin: 0 auto;
+}
+
+.site-header__cart-toggle {
+  display: inline-block;
+}
+
+.site-header__search {
+  display: inline-block;
+  max-width: 400px;
+  margin-top: $gutter / 2;
+  width: 100%;
 }
 
 .search-bar {
   max-width: 100%;
 
   @include at-query ($max, $medium) {
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -1139,19 +1131,12 @@ label.error {
 ==============================================================================*/
 .nav-bar {
   background-color: $colorNav;
-
-  ul {
-    margin: 0;
-  }
-
-  li {
-    margin: 0;
-  }
 }
 
 .site-nav {
   font-size: em(16px);
   cursor: default;
+  margin: 0 0 0 (-$gutter / 2);
 
   li {
     margin: 0;
@@ -1161,15 +1146,15 @@ label.error {
   > li {
     position: relative;
     display: inline-block;
-
-    &:first-child a {
-      padding-left: 0;
-    }
   }
+}
 
-  @include at-query ($max, $medium) {
-    margin: 0 auto;
-    text-align: center;
+/*================ Home to hamburger and cart that toggle drawers ================*/
+.site-nav--mobile {
+  @extend .site-nav;
+
+  .text-right & {
+    margin: 0 (-$gutter / 2) 0 0;
   }
 }
 
@@ -1186,8 +1171,19 @@ label.error {
     color: darken($colorNavText, 15%);
   }
 
+  .icon-arrow-down {
+    position: relative;
+    top: -2px;
+    font-size: 10px;
+    padding-left: $gutter / 4;
+  }
+
   .site-nav--active > & {
     font-weight: bold;
+  }
+
+  .site-nav--mobile & {
+    display: inline-block;
   }
 }
 
@@ -1196,7 +1192,8 @@ label.error {
   display: none;
   position: absolute;
   left: 0;
-  z-index: 5;
+  margin: 0;
+  z-index: $zindexNavDropdowns;
 
   .supports-no-touch .site-nav--has-dropdown:hover &,
   .site-nav--has-dropdown.nav-hover &,
@@ -1225,20 +1222,264 @@ label.error {
     margin: 0 auto;
     text-align: center;
   }
+}
 
-  .input-group,
-  .input-group-field {
+/*============================================================================
+  #Mobile Nav
+  - List of items inside the mobile drawer
+==============================================================================*/
+.mobile-nav {
+  // Negative of .drawer left/right padding for full-width link tap area
+  margin: (-$gutter / 2) (-$gutter / 2) 0 (-$gutter / 2);
+
+  li {
     margin-bottom: 0;
   }
 }
 
+.mobile-nav__search {
+  padding: $gutter / 2;
+
+  .search-bar {
+    margin-bottom: 0;
+  }
+}
+
+.mobile-nav__item {
+  position: relative;
+  display: block;
+
+  // Background color on top level items so there is no
+  // element overlap on subnav's CSS toggle animation
+  .mobile-nav > & {
+    background-color: $colorDrawers;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: $gutter / 2;
+    right: $gutter / 2;
+    border-bottom: 1px solid $colorDrawerBorder;
+  }
+
+  .mobile-nav > &:last-child:after {
+    display: none;
+  }
+}
+
+// Login/logout links can't have a class on them, so style <a> element
+.mobile-nav__item a {
+  display: block;
+}
+
+.mobile-nav__item a,
+.mobile-nav__toggle button {
+  color: $colorDrawerText;
+  padding: $gutter / 2;
+  text-decoration: none;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: darken($colorDrawerText, 15%);
+  }
+
+  &:active,
+  &:focus {
+    background-color: darken($colorDrawers, 5%);
+  }
+}
+
+.mobile-nav__item--active {
+  font-weight: bold;
+}
+
+.mobile-nav__has-sublist {
+  display: table;
+  width: 100%;
+
+  .mobile-nav__link {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+  }
+}
+
+.mobile-nav__toggle {
+  display: table-cell;
+  vertical-align: middle;
+  width: 1%;
+}
+
+.mobile-nav__toggle-open {
+  .mobile-nav--expanded & {
+    display: none;
+  }
+}
+
+.mobile-nav__toggle-close {
+  display: none;
+
+  .mobile-nav--expanded & {
+    display: block;
+  }
+}
+
+.mobile-nav__sublist {
+  margin: 0;
+  max-height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: all 300ms cubic-bezier(0.57, 0.06, 0.05, 0.95);
+  @include backface();
+
+  .mobile-nav--expanded + & {
+    visibility: visible;
+    max-height: 700px;
+    transition: all 700ms cubic-bezier(0.57, 0.06, 0.05, 0.95);
+  }
+
+  .mobile-nav__item:after {
+    top: 0;
+    bottom: auto;
+  }
+
+  .mobile-nav__link {
+    padding-left: $gutter;
+    font-weight: normal;
+  }
+}
+
+/*============================================================================
+  #Drawers
+==============================================================================*/
+.js-drawer-open {
+  overflow: hidden;
+  height: 100%;
+}
+
+.drawer {
+  @include promote-layer();
+  display: none;
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  top: 0;
+  bottom: 0;
+  padding: 0 ($gutter / 2) ($gutter / 2);
+  max-width: 95%;
+  z-index: $zindexDrawer;
+  color: $colorDrawerText;
+  background-color: $colorDrawers;
+  transition: $drawerTransition;
+
+  a {
+    color: $colorDrawerText;
+
+    &:hover,
+    &:focus {
+      opacity: 0.7;
+    }
+  }
+
+  input,
+  textarea {
+    border-color: $colorDrawerBorder;
+  }
+}
+
+.drawer--left {
+  width: $drawerNavWidth;
+  left: -$drawerNavWidth;
+  border-right: 1px solid $colorDrawerBorder;
+
+  .js-drawer-open-left & {
+    display: block;
+    @include transform(translateX($drawerNavWidth));
+
+    .lt-ie9 & {
+      left: 0;
+    }
+  }
+}
+
+.drawer--right {
+  width: $drawerCartWidth;
+  right: -$drawerCartWidth;
+  border-left: 1px solid $colorDrawerBorder;
+
+  .js-drawer-open-right & {
+    display: block;
+    @include transform(translateX(-$drawerCartWidth));
+
+    .lt-ie9 & {
+      right: 0;
+    }
+  }
+}
+
+#PageContainer {
+  overflow: hidden;
+}
+
+.is-moved-by-drawer {
+  @include promote-layer();
+  transition: $drawerTransition;
+
+  .js-drawer-open-left & {
+    @include transform(translateX($drawerNavWidth));
+  }
+
+  .js-drawer-open-right & {
+    @include transform(translateX(-$drawerCartWidth));
+  }
+}
+
+.drawer__header {
+  display: table;
+  height: 70px;
+  width: 100%;
+  margin-bottom: $gutter / 2;
+  border-bottom: 1px solid $colorDrawerBorder;
+}
+
+.drawer__title,
+.drawer__close {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.drawer__title {
+  width: 100%;
+}
+
+.drawer__close {
+  width: 1%;
+  text-align: center;
+  font-size: em(18px);
+}
+
+.drawer__close button {
+  position: relative;
+  right: -20px;
+  height: 100%;
+  padding: 0 20px;
+  color: inherit;
+
+  &:active,
+  &:focus {
+    background-color: darken($colorDrawers, 5%);
+  }
+}
 
 /*============================================================================
   #Site Footer
 ==============================================================================*/
 .site-footer {
   background-color: $colorFooterBg;
-  border-top: 1px solid $colorBorder;
   padding: $gutter 0;
   color: $colorFooterText;
 
@@ -1250,14 +1491,6 @@ label.error {
 /*============================================================================
   #Product and Collection Grids
 ==============================================================================*/
-.sold-out {
-
-}
-
-.on-sale {
-
-}
-
 .grid__image {
   display: block;
   margin: 0 auto ($gutter / 2);
@@ -1284,7 +1517,7 @@ label.error {
   a,
   span {
     display: inline-block;
-    padding: ($gutter / 2) 7px ($gutter / 2) 0;
+    padding: 0 7px 0 0;
     margin-right: 7px;
 
     &:first-child {
@@ -1305,15 +1538,6 @@ label.error {
   }
 }
 
-@include at-query($min, $large) {
-  .selector-wrapper,
-  .product-single__variants {
-    select {
-      max-width: 40%;
-    }
-  }
-}
-
 .product-single__photos {
   margin-bottom: $gutter;
 }
@@ -1327,18 +1551,6 @@ label.error {
 
   li {
     margin-bottom: $gutter;
-  }
-}
-
-/*============================================================================
-  #Blogs and Comments
-==============================================================================*/
-.comment {
-  margin-bottom: $gutter;
-
-  & + & {
-    border-top: 1px solid $colorBorder;
-    padding-top: $gutter;
   }
 }
 
@@ -1428,11 +1640,22 @@ label.error {
 
   &:first-child {
     padding-top: 0;
-    border-top: 0 none;
   }
 
   .js-qty {
-    margin: 0;
+    margin: 0 auto;
+  }
+}
+
+.cart-table {
+  th {
+    font-weight: normal;
+  }
+
+  td,
+  th {
+    padding: 30px 15px;
+    border: none;
   }
 }
 
@@ -1455,6 +1678,7 @@ label.error {
 
   img {
     display: block;
+    max-width: 100%;
   }
 }
 
@@ -1477,15 +1701,141 @@ label.error {
   display: block;
 }
 
-// ==============================================================================
-// #Demo Styles - for empty store state
-// ==============================================================================
-.demo-image {
-  background: url('//cdn.shopify.com/s/files/1/0383/9765/t/1/assets/blankslate-producticon.png?4') no-repeat center center #eee;
-  display: block;
-  text-align: center;
-  padding: 100px 0;
-  color: #aaa;
-  font-size: 0.875em;
-  text-decoration: none;
+/*============================================================================
+  #Ajax Cart Styles (conditionally loaded)
+==============================================================================*/
+{% if settings.ajax_cart_enable %}
+
+.ajaxcart__inner {
+  margin-bottom: $gutter;
 }
+
+.ajaxcart__row {
+  > .grid {
+    margin-left: -$gutter / 2;
+
+    > .grid__item {
+      padding-left: $gutter / 2;
+    }
+  }
+}
+
+.ajaxcart__product {
+  position: relative;
+  max-height: 500px;
+
+  &.is-removed {
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: all 450ms cubic-bezier(0.57,.06,.05,.95);
+    @include backface();
+  }
+}
+
+.ajaxcart__row {
+  padding-bottom: $gutter / 2;
+  margin-bottom: $gutter / 2;
+  border-bottom: 1px solid $colorDrawerBorder;
+}
+
+.ajaxcart__product-image {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 15px;
+
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+}
+
+.ajaxcart__product-name,
+.ajaxcart__product-meta {
+  display: block;
+}
+
+.ajaxcart__product-name + .ajaxcart__product-meta {
+  padding-top: $gutter / 5;
+}
+
+/*================ Quantity Selectors ================*/
+.js-qty {
+  position: relative;
+  margin-bottom: 1em;
+  max-width: 100px;
+  min-width: 75px;
+  overflow: visible;
+
+  input {
+    display: block;
+    background: none;
+    text-align: center;
+    width: 100%;
+    padding: 5px 25px;
+    margin: 0;
+  }
+}
+
+.js-qty__adjust {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  border: 0 none;
+  padding: 0 8px;
+  background: none;
+  text-align: center;
+  overflow: hidden;
+  @include user-select(none);
+
+  &:hover,
+  &:focus {
+    color: $colorPrimary;
+  }
+}
+
+.js-qty__adjust--plus {
+  right: 0;
+  border-left: 1px solid $colorBorder;
+}
+
+.js-qty__adjust--minus {
+  left: 0;
+  border-right: 1px solid $colorBorder;
+}
+
+/*================ Quantity Selectors in Ajax Cart ================*/
+.ajaxcart__qty {
+  @extend .js-qty;
+  margin: 0;
+
+  .is-loading & {
+    opacity: 0.5;
+    transition: none;
+  }
+}
+
+.ajaxcart__qty-num {
+  border-color: $colorDrawerBorder;
+  color: $colorDrawerText;
+}
+
+.ajaxcart__qty-adjust {
+  @extend .js-qty__adjust;
+  color: $colorDrawerText;
+}
+
+.ajaxcart__qty--plus {
+  @extend .js-qty__adjust--plus;
+  border-color: $colorDrawerBorder;
+}
+
+.ajaxcart__qty--minus {
+  @extend .js-qty__adjust--minus;
+  border-color: $colorDrawerBorder;
+}
+
+{% endif %} // settings.ajax_cart_enable
