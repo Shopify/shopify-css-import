@@ -1,3 +1,5 @@
+> **This repository is no longer maintained.** It has been archived and receives no updates or security fixes.
+
 ## Deprecation warning ⚠️
 
 Instead of these one-off grunt/gulp build tasks, developers are encouraged to check out [Slate](https://github.com/Shopify/slate) -
